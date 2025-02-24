@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Clothing Suggestion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #56CCF2, #2F80ED);
+            color: white;
+            padding: 20px;
+            position: relative;
+        }
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            animation: fadeInOut 2s infinite alternate;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
+        .container {
+            margin-top: 50px;
+        }
+        input, select {
+            padding: 10px;
+            margin: 10px;
+            border: none;
+            border-radius: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background-color: #ff5733;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #c70039;
+        }
+        #suggestion {
+            font-size: 24px;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">Created by Anantram Das</div>
+    <div class="container">
+        <h1>Weather Clothing Suggestion</h1>
+        <p>Enter the temperature and select the unit to get a clothing suggestion:</p>
+        <input type="number" id="temperature" placeholder="Temperature">
+        <select id="unit">
+            <option value="C">°C</option>
+            <option value="F">°F</option>
+        </select>
+        <button onclick="getClothingSuggestion()">Suggest Clothing</button>
+        <p id="suggestion"></p>
+    </div>
+    
+    <script>
+        function getClothingSuggestion() {
+            let temp = document.getElementById("temperature").value;
+            let unit = document.getElementById("unit").value;
+            let suggestion = "";
+            
+            if (temp === "" || isNaN(temp)) {
+                suggestion = "Please enter a valid temperature.";
+            } else {
+                temp = parseFloat(temp);
+                
+                if (unit === "F") {
+                    temp = (temp - 32) * 5/9; // Convert to Celsius
+                }
+                
+                if (temp < 10) {
+                    suggestion = "It's cold! Wear a heavy jacket and gloves.";
+                } else if (temp < 20) {
+                    suggestion = "A light jacket or sweater should be enough.";
+                } else if (temp < 30) {
+                    suggestion = "T-shirt and jeans should be comfortable.";
+                } else {
+                    suggestion = "It's hot! Wear shorts and a light shirt.";
+                }
+            }
+            
+            let suggestionElement = document.getElementById("suggestion");
+            suggestionElement.innerText = suggestion;
+            suggestionElement.style.opacity = 1;
+        }
+    </script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>
